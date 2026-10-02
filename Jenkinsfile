@@ -26,15 +26,40 @@ pipeline {
             }
         }
 
+        stage('SonarQube CQA') {
+            steps {
+                sh 'mvn sonar:sonar -Dsonar.projectKey=mydevops'
+            }
+        }
+
+        stage('Build Docker Images') {
+            steps {
+                sh 'docker build -t mydevops-app:1.0 .'
+                sh 'docker build -t mydevops-db:1.0 -f db/MySQLDockerfile db/'
+            }
+        }
+
+        stage('Trivy Scan') {
+            steps {
+                sh 'trivy image mydevops-app:1.0'
+                sh 'trivy image mydevops-db:1.0'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh 'docker compose up -d'
+            }
+        }
     }
 
     post {
         success {
-            echo 'Build and tests completed successfully'
+            echo 'Complete CI/CD pipeline executed successfully.'
         }
 
         failure {
-            echo 'Build or tests failed'
+            echo 'Pipeline failed. Check the stage logs.'
         }
     }
 }
