@@ -1,7 +1,26 @@
 services:
 
   mydevops:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: mydevops-app
     ports:
       - "8080:8080"
+    depends_on:
+      - devopsdb
+
+  devopsdb:
+    build:
+      context: ./db
+      dockerfile: MySQLDockerfile
+    container_name: devops-db
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: devopspassword
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
