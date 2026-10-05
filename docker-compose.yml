@@ -1,19 +1,15 @@
 services:
 
   mydevops:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: mydevops-app:v1
     container_name: mydevops-app
     ports:
-      - "8080:8080"
+      - "8083:8080"
     depends_on:
       - devopsdb
 
   devopsdb:
-    build:
-      context: ./db
-      dockerfile: MySQLDockerfile
+    image: mydevops-db:v1
     container_name: devops-db
     ports:
       - "3306:3306"
