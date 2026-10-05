@@ -30,6 +30,14 @@
 
     </dependencies>
 
+    <distributionManagement>
+        <repository>
+            <id>nexus-releases</id>
+            <name>MyDevOps Nexus Releases</name>
+            <url>http://13.210.194.119:8082/repository/mydevops-releases/</url>
+        </repository>
+    </distributionManagement>
+
     <build>
         <plugins>
 
